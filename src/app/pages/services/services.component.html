@@ -1,11 +1,93 @@
 <div class="services-container">
     <h1>Services</h1>
-    <button (click)="fetchServiceRequests()">Load Service Requests</button>
-    <div *ngFor="let request of serviceRequests" class="service-card">
-        <h2>{{ request.clienteNombre }}</h2>
-        <p>Description: {{ request.descripcion }}</p>
-        <p>Status: {{ request.estado }}</p>
-        <p>Assigned Technician: {{ request.tecnicoAsignadoId }}</p>
+
+    <!-- Alert Message -->
+    <div *ngIf="alertMessage" class="alert">
+        {{ alertMessage }}
+    </div>
+
+    <div class="card-container">
+        <div class="card">
+            <h2>Registrar Solicitud</h2>
+            <form (ngSubmit)="registrarSolicitud()">
+                <label>
+                    Nombre del Cliente:
+                    <input [(ngModel)]="nuevaSolicitud.clienteNombre" name="clienteNombre" required />
+                </label>
+                <label>
+                    Correo del Cliente:
+                    <input [(ngModel)]="nuevaSolicitud.clienteCorreo" name="clienteCorreo" required />
+                </label>
+                <label>
+                    Teléfono del Cliente:
+                    <input [(ngModel)]="nuevaSolicitud.clienteTelefono" name="clienteTelefono" required />
+                </label>
+                <label>
+                    Descripción:
+                    <textarea [(ngModel)]="nuevaSolicitud.descripcion" name="descripcion" required></textarea>
+                </label>
+                <button type="submit">Registrar</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>Asignar Técnico</h2>
+            <form (ngSubmit)="asignarTecnico()">
+                <label>
+                    ID de la Solicitud:
+                    <input type="number" [(ngModel)]="solicitudId" name="solicitudId" required />
+                </label>
+                <label>
+                    Selecciona Técnico:
+                    <select [(ngModel)]="tecnicoId" name="tecnicoId" required>
+                        <option *ngFor="let tecnico of tecnicos" [value]="tecnico.id">
+                            {{ tecnico.nombre }} - {{ tecnico.tipo }}
+                        </option>
+                    </select>
+                </label>
+                <button type="submit">Asignar Técnico</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>Filtros</h2>
+            <label>
+                Filtrar por Nombre del Cliente:
+                <input [(ngModel)]="clienteNombre" name="clienteNombre" />
+            </label>
+            <button (click)="filtrarSolicitudesPorCliente()">Filtrar por Cliente</button>
+            <label>
+                Filtrar por Técnico:
+                <select [(ngModel)]="tecnicoId" name="tecnicoId">
+                    <option value="">Todos</option>
+                    <option *ngFor="let tecnico of tecnicos" [value]="tecnico.id">
+                        {{ tecnico.nombre }}
+                    </option>
+                </select>
+            </label>
+            <button (click)="filtrarSolicitudesPorTecnico()">Filtrar por Técnico</button>
+        </div>
+    </div>
+
+    <div class="services-list">
+        <h2>Lista de Solicitudes</h2>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Descripción</th>
+                <th>Estado</th>
+                <th>Técnico Asignado</th>
+                <th>Fecha de Creación</th>
+            </tr>
+            <tr *ngFor="let request of serviceRequests">
+                <td>{{ request.id }}</td>
+                <td>{{ request.clienteNombre }}</td>
+                <td>{{ request.descripcion }}</td>
+                <td>{{ request.estado }}</td>
+                <td>{{ request.tecnicoAsignado || 'No asignado' }}</td>
+                <td>{{ request.fechaCreacion }}</td>
+            </tr>
+        </table>
     </div>
 </div>
-

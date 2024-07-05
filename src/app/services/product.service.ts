@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Producto } from '../models/producto';
+import { ProductoComponentePC } from '../models/producto-componente-pc';
+import { ProductoPeriferico } from '../models/producto-periferico';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -17,15 +19,21 @@ export class ProductService {
   }
 
   crearProducto(product: Producto): Observable<Producto> {
-    return this.http.post<Producto>(`${this.baseUrl}/registrar`, product);
+    if ((product as ProductoComponentePC).tipoComponente) {
+      return this.http.post<Producto>(`${this.baseUrl}/registrar/componente`, product);
+    } else if ((product as ProductoPeriferico).marca) {
+      return this.http.post<Producto>(`${this.baseUrl}/registrar/periferico`, product);
+    } else {
+      throw new Error("Tipo de producto no reconocido");
+    }
   }
 
   actualizarStock(id: number, cantidad: number): Observable<Producto> {
-    return this.http.put<Producto>(`${this.baseUrl}/actualizar-stock/${id}`, { cantidad });
+    return this.http.put<Producto>(`${this.baseUrl}/actualizar-stock/${id}?cantidad=${cantidad}`, {});
   }
 
-  obtenerProductosObsoletos(): Observable<Producto[]> {
-    return this.http.get<Producto[]>(`${this.baseUrl}/alertar-obsoletos`);
+  obtenerProductosConBajoStock(): Observable<Producto[]> {
+    return this.http.get<Producto[]>(`${this.baseUrl}/alertar-bajostock`);
   }
 
   filtrarProductosPorTipo(tipo: string): Observable<Producto[]> {

@@ -21,13 +21,29 @@ export class ServiceRequestService {
     return this.http.put<SolicitudServicio>(`${this.baseUrl}/asignar-tecnico/${id}/${tecnicoId}`, {});
   }
 
-  monitorearSolicitudes(): Observable<SolicitudServicio[]> {
-    return this.http.get<SolicitudServicio[]>(`${this.baseUrl}/monitorear`);
-  }
-
   obtenerSolicitudes(): Observable<SolicitudServicio[]> {
     return this.http.get<SolicitudServicio[]>(this.baseUrl);
   }
+
+  filtrarSolicitudesPorCliente(clienteNombre: string): Observable<SolicitudServicio[]> {
+    return this.http.get<SolicitudServicio[]>(`${this.baseUrl}/filtrar-cliente?clienteNombre=${clienteNombre}`);
+  }
+
+  filtrarSolicitudesPorTecnico(tecnicoAsignado: string): Observable<SolicitudServicio[]> {
+    return this.http.get<SolicitudServicio[]>(`${this.baseUrl}/filtrar-tecnico?tecnicoAsignado=${tecnicoAsignado}`);
+  }
+
+  actualizarEstado(id: number, estado: string): Observable<SolicitudServicio> {
+    return this.http.put<SolicitudServicio>(`${this.baseUrl}/actualizar-estado/${id}?estado=${estado}`, {});
+  }
+
+  obtenerTecnicos(): Observable<Tecnico[]> {
+    return this.http.get<Tecnico[]>(`${this.baseUrl}/tecnicos`);
+  }
 }
 
-
+export interface Tecnico {
+  id: number;
+  nombre: string;
+  tipo: string;
+}

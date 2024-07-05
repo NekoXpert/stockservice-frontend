@@ -1,16 +1,93 @@
 .services-container {
-  text-align: center;
-  margin-top: 2rem;
+  padding: 20px;
+  background: #fff;
+  color: #000;
+
   h1 {
-    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 20px;
     color: #1754da;
   }
-  .service-card {
-    background: linear-gradient(45deg, #1754da, #802eeb);
+
+  .alert {
+    background-color: #4caf50;
     color: white;
-    padding: 1rem;
-    margin: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    text-align: center;
+  }
+
+  .card-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .card {
+    flex: 1 1 30%;
+    background: linear-gradient(to right, #1754da, #802eeb);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    position: relative;
+    z-index: 1;
+
+    h2 {
+      margin-bottom: 10px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+
+      input,
+      textarea,
+      select {
+        display: block;
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border: none;
+        border-radius: 5px;
+      }
+    }
+
+    button {
+      background-color: #6a11cb;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #4facfe;
+      }
+    }
+  }
+
+  .services-list {
+    margin-top: 20px;
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+
+      th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+    }
   }
 }

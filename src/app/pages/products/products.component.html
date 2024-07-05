@@ -1,7 +1,13 @@
 <div class="products-container">
     <h1>Products</h1>
 
-    <div class="form-container">
+    <!-- Alert Message -->
+    <div *ngIf="alertMessage" class="alert">
+        {{ alertMessage }}
+    </div>
+
+<div class="card-container">
+    <div class="card">
         <h2>Registrar Producto</h2>
         <form (ngSubmit)="registrarProducto()">
             <label>
@@ -19,34 +25,54 @@
             <label>
                 Tipo:
                 <select [(ngModel)]="nuevoProducto.tipo" name="tipo" required>
-                    <option value="Component">Componente PC</option>
-                    <option value="Electronics">Periferico</option>
+                    <option value="ComponentePC">Componente PC</option>
+                    <option value="Periferico">Periferico</option>
                 </select>
             </label>
-            <label>
-                Descripción:
-                <input [(ngModel)]="nuevoProducto.descripcion" name="descripcion" required />
-            </label>
+            <div *ngIf="nuevoProducto.tipo === 'ComponentePC'">
+                <label>
+                    Tipo Componente:
+                    <input [(ngModel)]="nuevoProducto.tipoComponente" name="tipoComponente" required />
+                </label>
+                <label>
+                    Especificaciones:
+                    <input [(ngModel)]="nuevoProducto.especificaciones" name="especificaciones" required />
+                </label>
+            </div>
+            <div *ngIf="nuevoProducto.tipo === 'Periferico'">
+                <label>
+                    Marca:
+                    <input [(ngModel)]="nuevoProducto.marca" name="marca" required />
+                </label>
+                <label>
+                    Modelo:
+                    <input [(ngModel)]="nuevoProducto.modelo" name="modelo" required />
+                </label>
+            </div>
             <button type="submit">Registrar</button>
         </form>
     </div>
 
-    <div class="form-container">
-        <h2>Actualizar Stock</h2>
-        <form (ngSubmit)="actualizarStock()">
-            <label>
-                ID del Producto:
-                <input type="number" [(ngModel)]="idProducto" name="idProducto" required />
-            </label>
-            <label>
-                Nueva Cantidad:
-                <input type="number" [(ngModel)]="nuevaCantidad" name="nuevaCantidad" required />
-            </label>
-            <button type="submit">Actualizar</button>
-        </form>
+        <div class="card">
+            <h2>Actualizar Stock</h2>
+            <form (ngSubmit)="actualizarStock()">
+                <label>
+                    ID del Producto:
+                    <input type="number" [(ngModel)]="idProducto" name="idProducto" required
+                        (input)="validarCantidad($event)" />
+                </label>
+                <label>
+                    Nueva Cantidad:
+                    <input type="number" [(ngModel)]="nuevaCantidad" name="nuevaCantidad" required
+                        (input)="validarCantidad($event)" />
+                </label>
+                <div *ngIf="errorCantidad" class="error-message">Ingresa un número correcto mayor o igual a 0</div>
+                <button type="submit" [disabled]="errorCantidad">Actualizar</button>
+            </form>
+        </div>
     </div>
 
-    <div class="filters-container">
+    <div class="card">
         <h2>Filtros</h2>
         <label>
             Filtrar por Nombre:
@@ -57,19 +83,21 @@
             <select [(ngModel)]="tipoFiltro" name="tipoFiltro">
                 <option value="">Todos</option>
                 <option value="ProductoComponentePC">Componente PC</option>
-                <option value="ProductoElectronico">Periferico</option>
+                <option value="ProductoPeriferico">Periféricos</option>
             </select>
         </label>
-        <button (click)="filtrar()">Filtrar</button>
-        <button (click)="obtenerProductosObsoletos()">Obtener Productos Obsoletos</button>
+        <button class="buttonid" (click)="filtrarPorNombre()">Filtrar por Nombre</button>
+        <button class="buttonid" (click)="filtrarPorTipo()">Filtrar por Tipo</button>
+        <button class="buttonid" (click)="obtenerProductosConBajoStock()">Productos con Bajo Stock</button>
     </div>
 
     <div class="products-list">
         <h2>Lista de Productos</h2>
         <div *ngFor="let product of products" class="product-card">
             <h3>{{ product.nombre }}</h3>
-            <p>Precio: {{ product.precio }}</p>
-            <p>Stock: {{ product.cantidad }}</p>
+            <p>Código: #000{{ product.id }}</p>
+            <p>Precio: S/. {{ product.precio }} soles</p>
+            <p>Stock: {{ product.cantidad }} unidades</p>
             <p>{{ product.descripcion }}</p>
         </div>
     </div>

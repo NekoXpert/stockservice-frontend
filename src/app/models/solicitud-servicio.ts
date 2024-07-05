@@ -1,13 +1,11 @@
-import { Producto } from './producto';
-
 export interface SolicitudServicio {
     id: number;
     clienteNombre: string;
-    clienteContacto: string;
+    clienteCorreo: string;
+    clienteTelefono: string;
     descripcion: string;
     estado: string;
+    tecnicoAsignado: string;
     fechaCreacion: Date;
     fechaActualizacion: Date;
-    tecnicoAsignadoId: number | null; // ID del técnico asignado
-    productos: Producto[];
 }

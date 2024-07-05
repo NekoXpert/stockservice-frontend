@@ -1,6 +1,6 @@
 import { Producto } from './producto';
 
-export interface ProductoElectronico extends Producto {
+export interface ProductoPeriferico extends Producto {
     marca: string;
     modelo: string;
 }
