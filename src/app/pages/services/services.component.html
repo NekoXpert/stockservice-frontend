@@ -1,0 +1,11 @@
+<div class="services-container">
+    <h1>Services</h1>
+    <button (click)="fetchServiceRequests()">Load Service Requests</button>
+    <div *ngFor="let request of serviceRequests" class="service-card">
+        <h2>{{ request.clienteNombre }}</h2>
+        <p>Description: {{ request.descripcion }}</p>
+        <p>Status: {{ request.estado }}</p>
+        <p>Assigned Technician: {{ request.tecnicoAsignadoId }}</p>
+    </div>
+</div>
+

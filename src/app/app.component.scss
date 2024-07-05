@@ -1,0 +1,11 @@
+.main-container {
+  display: flex;
+}
+
+.content {
+  margin-left: 250px; /* width of the sidebar */
+  padding: 2rem;
+  flex-grow: 1;
+  background: #f4f4f4;
+  min-height: 100vh;
+}
