@@ -36,14 +36,4 @@ export class ServiceRequestService {
   actualizarEstado(id: number, estado: string): Observable<SolicitudServicio> {
     return this.http.put<SolicitudServicio>(`${this.baseUrl}/actualizar-estado/${id}?estado=${estado}`, {});
   }
-
-  obtenerTecnicos(): Observable<Tecnico[]> {
-    return this.http.get<Tecnico[]>(`${this.baseUrl}/tecnicos`);
-  }
-}
-
-export interface Tecnico {
-  id: number;
-  nombre: string;
-  tipo: string;
 }

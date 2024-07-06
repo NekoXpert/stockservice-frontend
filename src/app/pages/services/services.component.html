@@ -48,46 +48,53 @@
                 <button type="submit">Asignar Técnico</button>
             </form>
         </div>
+    </div>
 
-        <div class="card">
-            <h2>Filtros</h2>
-            <label>
-                Filtrar por Nombre del Cliente:
-                <input [(ngModel)]="clienteNombre" name="clienteNombre" />
-            </label>
-            <button (click)="filtrarSolicitudesPorCliente()">Filtrar por Cliente</button>
-            <label>
-                Filtrar por Técnico:
-                <select [(ngModel)]="tecnicoId" name="tecnicoId">
-                    <option value="">Todos</option>
-                    <option *ngFor="let tecnico of tecnicos" [value]="tecnico.id">
-                        {{ tecnico.nombre }}
-                    </option>
-                </select>
-            </label>
-            <button (click)="filtrarSolicitudesPorTecnico()">Filtrar por Técnico</button>
-        </div>
+    <div class="card">
+        <h2>Filtros</h2>
+        <label>
+            Filtrar por Nombre del Cliente:
+            <input [(ngModel)]="clienteNombre" name="clienteNombre" />
+        </label>
+        <label>
+            Filtrar por Técnico Asignado:
+            <select [(ngModel)]="tecnicoId" name="tecnicoId">
+                <option value="">Todos</option>
+                <option *ngFor="let tecnico of tecnicos" [value]="tecnico.id">{{ tecnico.nombre }}</option>
+            </select>
+        </label>
+        <button class="buttonid" (click)="filtrarSolicitudesPorCliente()">Filtrar por Cliente</button>
+        <button class="buttonid" (click)="filtrarSolicitudesPorTecnico()">Filtrar por Técnico</button>
     </div>
 
     <div class="services-list">
-        <h2>Lista de Solicitudes</h2>
+        <h2>Lista de Solicitudes de Servicio</h2>
         <table>
-            <tr>
-                <th>ID</th>
-                <th>Cliente</th>
-                <th>Descripción</th>
-                <th>Estado</th>
-                <th>Técnico Asignado</th>
-                <th>Fecha de Creación</th>
-            </tr>
-            <tr *ngFor="let request of serviceRequests">
-                <td>{{ request.id }}</td>
-                <td>{{ request.clienteNombre }}</td>
-                <td>{{ request.descripcion }}</td>
-                <td>{{ request.estado }}</td>
-                <td>{{ request.tecnicoAsignado || 'No asignado' }}</td>
-                <td>{{ request.fechaCreacion }}</td>
-            </tr>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre del Cliente</th>
+                    <th>Correo</th>
+                    <th>Teléfono</th>
+                    <th>Descripción</th>
+                    <th>Técnico Asignado</th>
+                    <th>Fecha de Creación</th>
+                    <th>Fecha de Actualización</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let request of serviceRequests">
+                    <td>{{ request.id }}</td>
+                    <td>{{ request.clienteNombre }}</td>
+                    <td>{{ request.clienteCorreo }}</td>
+                    <td>{{ request.clienteTelefono }}</td>
+                    <td>{{ request.descripcion }}</td>
+
+                    <td>{{ request.tecnicoAsignado }}</td>
+                    <td>{{ request.fechaCreacion | date }}</td>
+                    <td>{{ request.fechaActualizacion | date }}</td>
+                </tr>
+            </tbody>
         </table>
     </div>
 </div>

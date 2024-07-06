@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { ServiceRequestService, Tecnico } from '../../services/service-request.service';
+import { ServiceRequestService } from '../../services/service-request.service';
 import { SolicitudServicio } from '../../models/solicitud-servicio';
+import { Tecnico, tecnicos } from '../../models/tecnico'; // Importa el enum y la lista de técnicos
 
 @Component({
   selector: 'app-services',
@@ -15,29 +16,22 @@ import { SolicitudServicio } from '../../models/solicitud-servicio';
 export class ServicesComponent implements OnInit {
   serviceRequests: SolicitudServicio[] = [];
   nuevaSolicitud: Partial<SolicitudServicio> = {};
-  solicitudId: number | string = '';
-  tecnicoId: number | string = '';
+  solicitudId: number = 0;
+  tecnicoId: number = 0;
   estado: string = '';
   clienteNombre: string = '';
   alertMessage: string | null = null;
-  tecnicos: Tecnico[] = [];
+  tecnicos = tecnicos; // Asigna la lista de técnicos al componente
 
   constructor(private serviceRequestService: ServiceRequestService) { }
 
   ngOnInit(): void {
     this.fetchServiceRequests();
-    this.fetchTecnicos();
   }
 
   fetchServiceRequests(): void {
     this.serviceRequestService.obtenerSolicitudes().subscribe(data => {
       this.serviceRequests = data;
-    });
-  }
-
-  fetchTecnicos(): void {
-    this.serviceRequestService.obtenerTecnicos().subscribe(data => {
-      this.tecnicos = data;
     });
   }
 
@@ -47,13 +41,17 @@ export class ServicesComponent implements OnInit {
       this.fetchServiceRequests();
       this.nuevaSolicitud = {};  // Limpiar el formulario después de agregar
       this.showAlert('Solicitud registrada exitosamente');
+    }, error => {
+      this.showAlert('Error al registrar la solicitud de servicio');
     });
   }
 
   asignarTecnico(): void {
-    this.serviceRequestService.asignarTecnico(Number(this.solicitudId), Number(this.tecnicoId)).subscribe(() => {
+    this.serviceRequestService.asignarTecnico(this.solicitudId, this.tecnicoId).subscribe(() => {
       this.fetchServiceRequests();
       this.showAlert('Técnico asignado exitosamente');
+    }, error => {
+      this.showAlert('Error al asignar el técnico');
     });
   }
 
@@ -64,13 +62,16 @@ export class ServicesComponent implements OnInit {
   }
 
   filtrarSolicitudesPorTecnico(): void {
-    this.serviceRequestService.filtrarSolicitudesPorTecnico(String(this.tecnicoId)).subscribe(data => {
-      this.serviceRequests = data;
-    });
+    const tecnico = this.tecnicos.find(t => t.id === this.tecnicoId);
+    if (tecnico) {
+      this.serviceRequestService.filtrarSolicitudesPorTecnico(tecnico.nombre).subscribe(data => {
+        this.serviceRequests = data;
+      });
+    }
   }
 
   actualizarEstado(): void {
-    this.serviceRequestService.actualizarEstado(Number(this.solicitudId), this.estado).subscribe(() => {
+    this.serviceRequestService.actualizarEstado(this.solicitudId, this.estado).subscribe(() => {
       this.fetchServiceRequests();
       this.showAlert('Estado actualizado exitosamente');
     });
@@ -83,3 +84,4 @@ export class ServicesComponent implements OnInit {
     }, 5000);
   }
 }
+
